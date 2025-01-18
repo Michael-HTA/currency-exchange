@@ -1,8 +1,8 @@
 <x-app-layout>
-    <h1 class="text-4xl text-center mt-10 font-semibold">
+    <h1 class="text-white text-4xl text-center mt-10 font-semibold">
         M Currency Converter
     </h1>
-    <p class="text-center mt-3">
+    <p class="text-center text-white mt-3">
         Check live foreign currency exchange rates
     </p>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
@@ -12,7 +12,7 @@
             <div class="w-full sm:flex sm:justify-around my-3 sm:space-x-1">
                 <div
                     class="border rounded-lg p-2 w-full sm:w-1/3 focus-within:ring-1 focus-within:ring-sky-500 hover:bg-slate-100 group">
-                    <label for="amount" class="block">Amount</label>
+                    <label for="amount" class="block text-gray-500">Amount</label>
                     <div class="flex">
                         <span class="my-auto">$</span>
                         <input min='0' inputmode="numeric" type="number" id='amount'
@@ -64,7 +64,7 @@
     <script>
         const navTag = document.getElementById('nav-tag');
         const classNameForNavTag =
-            'font-medium hover:bg-slate-300  w-60 p-1 my-1 border rounded-3xl flex justify-center p-3';
+            'font-medium hover:bg-slate-300 font-medium  w-60 p-1 my-1 border rounded-3xl flex justify-center p-3';
         const navList = [{
                 name: 'Convert',
                 iconClass: 'material-icons',
