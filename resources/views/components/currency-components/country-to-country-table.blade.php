@@ -13,8 +13,8 @@
         <tbody>
             @foreach ($defaultRate as $rate)
                 <tr>
-                    <td class="text-center p-3 font-bold text-blue-600">{{ $rate }} USD</td>
-                    <td class="text-center p-3 font-bold">{{ $rate * $toValue }} EUR</td>
+                    <td class="text-center p-3 font-bold text-blue-600">{{ $rate . ' ' . $fromSymbol }}</td>
+                    <td class="text-center p-3 font-bold">{{ $rate * $toValue . ' ' . $toSymbol }}</td>
                 </tr>
             @endforeach
         </tbody>
