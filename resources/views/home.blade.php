@@ -9,14 +9,14 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-3">
 
             <div class="flex justify-evenly border mt-5 rounded-3xl">
-                <x-currency-components.currency-nav :isActive='true' iconName='currency_exchange'
+                <x-currency-components.currency-nav link="{{route('home')}}" :isActive='true' iconName='currency_exchange'
                     name='Convert'></x-currency-components.currency-nav>
-                <x-currency-components.currency-nav :isActive='false' iconName='analytics'
+                <x-currency-components.currency-nav link="{{route('chart')}}" :isActive='false' iconName='analytics'
                     name='Chart'></x-currency-components.currency-nav>
             </div>
 
             <div class="w-full sm:flex sm:justify-around my-3 sm:space-x-1 items-center">
-                
+
                 <div
                     class="mt-1 sm:mt-0 border rounded-lg  p-3 w-full sm:w-1/3 focus-within:ring-1 focus-within:ring-sky-500 group hover:bg-slate-100">
                     <label for="amount" class="block text-gray-500">Amount</label>
@@ -30,9 +30,9 @@
                 <x-currency-components.currency-dropbox destination='from'
                     labelName='From'></x-currency-components.currency-dropbox>
 
-                <button onclick="swiftSelectedOptions()" class="material-icons border rounded-full h-10 w-10">
-                    swap_horiz
-                </button>
+                <div class="w-auto flex justify-center">
+                    <x-currency-components.swap-button></x-currency-components.swap-button>
+                </div>
 
                 <x-currency-components.currency-dropbox destination='to'
                     labelName='To'></x-currency-components.currency-dropbox>
@@ -84,12 +84,5 @@
             const convertedResult = document.getElementById('converted-result');
             convertedResult.textContent = amount.value + ' USD = ' + to * amount.value + ' Australian Dollar';
         });
-
-        function swiftSelectedOptions() {
-            const [select1, select2] = [document.getElementById('from'), document.getElementById('to')];
-            const [index1, index2] = [select1.selectedIndex, select2.selectedIndex];
-            if (index1 >= 0) select2.options[index1].selected = !(select1.options[index1].selected = false);
-            if (index2 >= 0) select1.options[index2].selected = !(select2.options[index2].selected = false);
-        }
     </script>
 </x-app-layout>
