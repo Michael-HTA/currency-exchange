@@ -1,6 +1,6 @@
 <x-app-layout>
     <h1 class="text-white text-4xl text-center mt-10 font-semibold">
-        M Currency Converter
+        M Chart
     </h1>
     <p class="text-center text-white mt-3">
         Check live foreign currency exchange rates

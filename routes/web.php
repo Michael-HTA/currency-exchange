@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('chart',[ChartController::class,'index'])->name('chart');
+Route::post('test',[ExchangeController::class,'index']);
+Route::get('test',function(){
+    return view('test');
+});
 
 require __DIR__.'/auth.php';
