@@ -11,11 +11,11 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Settings Dropdown -->
@@ -66,11 +66,11 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+        {{-- <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home') }}
             </x-responsive-nav-link>
-        </div>
+        </div> --}}
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">

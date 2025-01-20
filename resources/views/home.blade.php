@@ -1,8 +1,8 @@
 <x-app-layout>
-    <h1 class="text-white text-4xl text-center mt-10 font-semibold">
+    <h1 class="text-4xl text-center mt-10 font-semibold">
         M Currency Converter
     </h1>
-    <p class="text-center text-white mt-3">
+    <p class="text-center mt-3">
         Check live foreign currency exchange rates
     </p>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
@@ -15,29 +15,27 @@
                     name='Chart'></x-currency-components.currency-nav>
             </div>
 
+            {{-- convert process --}}
             <div class="w-full sm:flex sm:justify-around my-3 sm:space-x-1 items-center">
-
                 <div
                     class="mt-1 sm:mt-0 border rounded-lg  p-3 w-full sm:w-1/3 focus-within:ring-1 focus-within:ring-sky-500 group hover:bg-slate-100">
                     <label for="amount" class="block text-gray-500">Amount</label>
-                    <div class="flex">
+                    <div class="flex ">
                         <span class="my-auto">$</span>
                         <input min='0' inputmode="numeric" type="number" id='amount'
                             class=" m-0 p-0 border-0 w-full  focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none group-hover:bg-slate-100">
                     </div>
                 </div>
-
                 <x-currency-components.currency-dropbox destination='from'
                     labelName='From'></x-currency-components.currency-dropbox>
-
                 <div class="w-auto flex justify-center">
                     <x-currency-components.swap-button></x-currency-components.swap-button>
                 </div>
-
                 <x-currency-components.currency-dropbox destination='to'
                     labelName='To'></x-currency-components.currency-dropbox>
-
             </div>
+
+            {{-- result --}}
             <div class="flex flex-col-reverse sm:flex-row sm:justify-between items-center">
                 <div class="flex rounded-xl p-3">
                     <div>
@@ -52,9 +50,9 @@
                         </p>
                     </div>
                     <div class="flex items-center justify-center mt-2">
-                        <button>
+                        <button class="hover:text-blue-500">
                             <span class="material-icons block">
-                                favorite_border
+                                star
                             </span>
                             <p>
                                 Bookmark!
