@@ -1,4 +1,4 @@
-<button onclick="swiftSelectedOptions()" class=" my-1 sm:my-0 material-icons border rounded-full h-10 w-10">
+<button onclick="swiftSelectedOptions()" class=" my-1 sm:my-0 material-icons border rounded-full h-10 w-10 hover:bg-slate-100 text-blue-600">
     swap_horiz
 </button>
 

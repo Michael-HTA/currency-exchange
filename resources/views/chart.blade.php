@@ -2,16 +2,16 @@
     <h1 class="text-white text-4xl text-center mt-10 font-semibold">
         M Chart
     </h1>
-    <p class="text-center text-white mt-3">
+    <p class="text-center mt-3">
         Check live foreign currency exchange rates
     </p>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-3">
 
             <div class="flex justify-evenly border mt-5 rounded-3xl">
-                <x-currency-components.currency-nav link="{{route('home')}}" :isActive='false' iconName='currency_exchange'
-                    name='Convert'></x-currency-components.currency-nav>
-                <x-currency-components.currency-nav link="{{route('chart')}}" :isActive='true' iconName='analytics'
+                <x-currency-components.currency-nav link="{{ route('home') }}" :isActive='false'
+                    iconName='currency_exchange' name='Convert'></x-currency-components.currency-nav>
+                <x-currency-components.currency-nav link="{{ route('chart') }}" :isActive='true' iconName='analytics'
                     name='Chart'></x-currency-components.currency-nav>
             </div>
 
@@ -24,6 +24,36 @@
                 <x-currency-components.currency-dropbox destination='to'
                     labelName='To'></x-currency-components.currency-dropbox>
             </div>
+            <div class="flex justify-center h-72 w-full">
+                <canvas id="myChart"></canvas>
+            </div>
         </div>
+
     </div>
+    <script>
+        const ctx = document.getElementById('myChart');
+        // console.log(Chart);
+        document.addEventListener('DOMContentLoaded', function() {
+            let myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange','Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 3],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    //responsive: true, // Ensures the chart resizes with its container
+                    maintainAspectRatio: false, // Optional: disable aspect ratio locking
+                }
+            });
+        });
+    </script>
 </x-app-layout>
