@@ -7,6 +7,9 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        {{-- favicon --}}
+        <link rel="icon" href="{{asset('lucide--square-sigma.png')}}" type="image/png">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -17,7 +20,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans font-medium antialiased">
-        <div class="min-h-screen bg-blue-200 text-gray-800 pb-10">
+        <div class="min-h-screen bg-slate-200 text-gray-800 pb-10">
             @include('layouts.navigation')
 
             <!-- Page Content -->

@@ -2,10 +2,10 @@
     $defaultRate = [1, 5, 10, 25, 50, 100, 500, 1000, 5000, 10000];
 @endphp
 <div class="w-full sm:w-2/4">
-    <div class="w-full text-center font-bold text-3xl my-10">Convert {{$from}} to {{$to}}</div>
+    <div class="w-full text-center font-bold text-3xl my-10">{{$from}} to {{$to}}</div>
     <table class="w-full bg-slate-100 rounded-3xl overflow-hidden">
         <thead>
-            <tr class="bg-slate-400">
+            <tr class="bg-slate-300">
                 <th class="p-3">{{$from}}</th>
                 <th class="p-3">{{$to}}</th>
             </tr>

@@ -1,6 +1,16 @@
+@php
+    $countries = [
+        'USD' => 'US Dollar',
+        'EUR' => 'Euro',
+        'GBP' => 'British Pound',
+        'CAD' => 'Canadian Dollar',
+        'AUD' => 'Australian Dollar',
+    ];
+@endphp
+
 <x-app-layout>
-    <h1 class="text-white text-4xl text-center mt-10 font-semibold">
-        M Chart
+    <h1 class="text-4xl text-center mt-10 font-semibold">
+        Chart
     </h1>
     <p class="text-center mt-3">
         Check live foreign currency exchange rates
@@ -16,13 +26,14 @@
             </div>
 
             <div class="w-full sm:flex sm:justify-around my-3 sm:space-x-1 items-center">
-                <x-currency-components.currency-dropbox destination='from'
-                    labelName='From'></x-currency-components.currency-dropbox>
+                <x-currency-components.currency-dropbox :countries="$countries" destination='baseCurrency'
+                        labelName='From' oldSelected={{ $baseCurrency }}></x-currency-components.currency-dropbox>
                 <div class="w-auto flex justify-center">
-                    <x-currency-components.swap-button></x-currency-components.swap-button>
+                    <x-currency-components.swap-button from='baseCurrency'
+                            to='targetedCurrency'></x-currency-components.swap-button>
                 </div>
-                <x-currency-components.currency-dropbox destination='to'
-                    labelName='To'></x-currency-components.currency-dropbox>
+                <x-currency-components.currency-dropbox :countries="$countries" destination='targetedCurrency'
+                        labelName='To' oldSelected={{ $targetedCurrency }}></x-currency-components.currency-dropbox>
             </div>
             <div class="flex justify-center h-72 w-full">
                 <canvas id="myChart"></canvas>

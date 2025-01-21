@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CurrencyExchangeRequest extends FormRequest
+class BookMarkRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -19,13 +19,10 @@ class CurrencyExchangeRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-
     public function rules(): array
     {
         return [
-            'baseCurrency' => 'nullable|string',
-            'targetedCurrency' => 'nullable|string',
-            'amount' => 'nullable',
+            //
         ];
     }
 }

@@ -7,7 +7,23 @@ use Illuminate\Support\Facades\Http;
 
 class ExchangeController extends Controller
 {
+
     public function index(CurrencyExchangeRequest $request){
+
+        $exchangeRate = 2;
+        $reverseExchangeRate = 1;
+        $validated = $request->validated();
+
+        // dd($validated);
+        return view('home',[
+            'amount' => $validated['amount'] ?? 0,
+            'baseCurrency' => $validated['baseCurrency'] ?? 'USD',
+            'targetedCurrency' => $validated['targetedCurrency'] ?? 'USD',
+            'exchangeRate' => $exchangeRate ?? 1,
+            'reverseExchangeRate' => $reverseExchangeRate ?? 1,
+        ]);
+    }
+    public function getData(CurrencyExchangeRequest $request){
 
         $baseUrl = config('services.api_service.base_url');
         $apiKey = config('services.api_service.key');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookMarkController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ExchangeController;
 use App\Http\Controllers\ProfileController;
@@ -9,9 +10,7 @@ Route::get('/', function () {
     return redirect('/home');
 });
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
+Route::get('/home',[ExchangeController::class,'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -20,6 +19,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('chart',[ChartController::class,'index'])->name('chart');
+Route::post('/bookmark', [BookMarkController::class,'store'])->name('bookmark.store');
 Route::post('test',[ExchangeController::class,'index']);
 Route::get('test',function(){
     return view('test');

@@ -5,10 +5,10 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('home') }}">
-                        <x-application-logo class="w-14 h-14 fill-current text-gray-500 rotate-90" />
+                    <a href="{{ route('home') }}" class="flex items-center">
+                        <x-application-logo class="w-14 h-14" />
+                        <p class="text-2xl font-semibold">Exchange</p>
                     </a>
-                    <p class="text-2xl">Exchange</p>
                 </div>
             </div>
 
