@@ -1,10 +1,10 @@
 @php
     $countries = [
         'USD' => 'US Dollar',
-        'EUR' => 'Euro',
-        'GBP' => 'British Pound',
-        'CAD' => 'Canadian Dollar',
-        'AUD' => 'Australian Dollar',
+        'THB' => 'Thai Baht',
+        'PHP' => 'Philippine Peso',
+        'SGD' => 'Singapore Dollar',
+        'MYR' => 'Malaysian Ringgit',
     ];
 @endphp
 <x-app-layout>
@@ -17,8 +17,12 @@
         Check live foreign currency exchange rates
     </p>
 
-
-
+    <div class="flex justify-center mt-2 h-4">
+        <p class=" text-green-500 flex items-center border-b-2 border-b-green-500 invisible opacity-0 h-0 overflow-hidden transition-all duration-500 ease-in-out"
+            id="bookmark-message">Bookmark has been added!<button type="button" class="material-icons" id="bookmark-close">
+                close
+            </button></p>
+    </div>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-5">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-3">
 
@@ -28,7 +32,7 @@
             <form action="" method="GET" class="w-full">
                 <div class="w-full sm:flex sm:justify-around my-3 sm:space-x-1 items-center">
                     @error('amount')
-                        {{$message}}
+                        {{ $message }}
                     @enderror
                     <div
                         class="mt-1 sm:mt-0 border rounded-lg  p-3 w-full sm:w-1/3 focus-within:ring-1 focus-within:ring-sky-500 group hover:bg-slate-100">
@@ -97,13 +101,10 @@
 
         {{-- Table --}}
         <div class="sm:flex sm:justify-between sm:space-x-10">
-            <x-currency-components.country-to-country-table :from="$countries[$baseCurrency]"
-                :fromSymbol="$baseCurrency" :to="$countries[$targetedCurrency]"
-                :toSymbol="$targetedCurrency"
-                :toValue="$exchangeRate"></x-currency-components.country-to-country-table>
-            <x-currency-components.country-to-country-table :from="$countries[$targetedCurrency]"
-                :fromSymbol="$targetedCurrency" :to="$countries[$baseCurrency]" :toSymbol="$baseCurrency"
-                :toValue="$reverseExchangeRate"></x-currency-components.country-to-country-table>
+            <x-currency-components.country-to-country-table :from="$countries[$baseCurrency]" :fromSymbol="$baseCurrency" :to="$countries[$targetedCurrency]"
+                :toSymbol="$targetedCurrency" :toValue="$exchangeRate"></x-currency-components.country-to-country-table>
+            <x-currency-components.country-to-country-table :from="$countries[$targetedCurrency]" :fromSymbol="$targetedCurrency" :to="$countries[$baseCurrency]"
+                :toSymbol="$baseCurrency" :toValue="$reverseExchangeRate"></x-currency-components.country-to-country-table>
         </div>
     </div>
 
@@ -130,11 +131,13 @@
                 if (!isNaN(value)) {
                     value = value.toFixed(2);
                     record.amount = value;
-                } else{
+                } else {
                     value = 0;
                 }
-                convertedResult.textContent = value + ' ' + countries[baseCurrency] + ' = ' + exchangeRate *
-                    value +
+
+                convertedResult.textContent = value + ' ' + countries[baseCurrency] + ' = ' + (Math.round(
+                        exchangeRate *
+                        value * 100) / 100) +
                     ' ' + countries[targetedCurrency];
             });
         }
@@ -164,14 +167,30 @@
             if (!response.ok) {
                 console.log(response.status);
             } else {
-                const data = await response.json();
-                console.log('API Response:', data);
+                // const data = await response.json();
+                // console.log('API Response:', data);
 
                 // Access the `id` field from the response
-                console.log('ID:', data.id);
+                // console.log('ID:', data.id);
+
+                const bookmarkMessage = document.getElementById('bookmark-message');
+                bookmarkMessage.classList.remove('invisible', 'opacity-0', 'h-0');
+                bookmarkMessage.classList.add('opacity-100', 'h-auto');
             }
         }
 
         interactiveChanges();
+
+
+        function closeMessage(){
+            const bookmarkClose = document.getElementById('bookmark-close');
+            bookmarkClose.addEventListener('click', () => {
+                const bookmarkMessage = document.getElementById('bookmark-message');
+                bookmarkMessage.classList.remove('opacity-100', 'h-auto');
+                bookmarkMessage.classList.add('invisible', 'opacity-0', 'h-0');
+            })
+        }
+
+        closeMessage();
     </script>
 </x-app-layout>

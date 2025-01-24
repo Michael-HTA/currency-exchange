@@ -23,8 +23,8 @@ class CurrencyExchangeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'baseCurrency' => 'nullable|string',
-            'targetedCurrency' => 'nullable|string',
+            'baseCurrency' => 'nullable|string|exists:currencies,code',
+            'targetedCurrency' => 'nullable|string|exists:currencies,code',
             'amount' => 'nullable|numeric',
         ];
     }

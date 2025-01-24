@@ -1,10 +1,10 @@
 @php
     $countries = [
         'USD' => 'US Dollar',
-        'EUR' => 'Euro',
-        'GBP' => 'British Pound',
-        'CAD' => 'Canadian Dollar',
-        'AUD' => 'Australian Dollar',
+        'THB' => 'Thai Baht',
+        'PHP' => 'Philippine Peso',
+        'SGD' => 'Singapore Dollar',
+        'MYR' => 'Malaysian Ringgit',
     ];
 @endphp
 

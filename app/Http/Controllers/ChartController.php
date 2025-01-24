@@ -12,7 +12,14 @@ class ChartController extends Controller
     }
 
     public function get(){
-        $data = Http::get('https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_9nYioKrDq09Z6O7cCYxI2ip6rbnYEl4rCStKYxpW&currencies=EUR,CAD');
+
+        $baseUrl = config('services.api_service.base_url');
+        $apiKey = config('services.api_service.key');
+
+         $data = Http::get($baseUrl,[
+                'apikey' => $apiKey,
+                'currencies' => 'EUR',
+            ]);
 
         return $data;
     }

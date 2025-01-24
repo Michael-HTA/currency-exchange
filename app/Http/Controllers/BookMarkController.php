@@ -16,10 +16,10 @@ class BookmarkController extends Controller
 
     private $currencies = [
         'USD' => 1,
-        'EUR' => 2,
-        'GBP' => 3,
-        'CAD' => 4,
-        'AUD' => 5,
+        'THB' => 6,
+        'PHP' => 7,
+        'SGD' => 8,
+        'MYR' => 9,
     ];
 
     public function index() {

@@ -18,7 +18,7 @@ class ExchangeController extends Controller
         return view('home',[
             'amount' => round($validated['amount'] ?? 0,2),
             'baseCurrency' => $validated['baseCurrency'] ?? 'USD',
-            'targetedCurrency' => $validated['targetedCurrency'] ?? 'USD',
+            'targetedCurrency' => $validated['targetedCurrency'] ?? 'THB',
             'exchangeRate' => $exchangeRate ?? 1,
             'reverseExchangeRate' => $reverseExchangeRate ?? 1,
         ]);
@@ -46,24 +46,24 @@ class ExchangeController extends Controller
                 'amount' => round($validated['amount'],2),
                 'baseCurrency' => $validated['baseCurrency'],
                 'targetedCurrency' => $validated['targetedCurrency'],
-                'exchangeRate' => $data['data'][$validated['targetedCurrency']],
+                'exchangeRate' => round($data['data'][$validated['targetedCurrency']],2),
                 'reverseExchangeRate' => $reverseExchangeRate,
             ]);
 
         } else{
             $data = Http::get($baseUrl,[
                 'apikey' => $apiKey,
-                'currencies' => 'EUR',
+                'currencies' => 'THB',
             ]);
 
             $data = $data->json();
-            $reverseExchangeRate = round(1/$data['data']['EUR'],2);
+            $reverseExchangeRate = round(1/$data['data']['THB'],2);
 
             return view('home',[
-                'amount' => 0,
+                'amount' => 10,
                 'baseCurrency' => 'USD',
-                'targetedCurrency' => 'EUR',
-                'exchangeRate' => $data['data']['EUR'],
+                'targetedCurrency' => 'THB',
+                'exchangeRate' => round($data['data']['THB'],2),
                 'reverseExchangeRate' => $reverseExchangeRate,
             ]);
         }
