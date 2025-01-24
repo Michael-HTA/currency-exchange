@@ -10,7 +10,7 @@
 <x-app-layout>
 
     {{-- Header --}}
-    <h1 class="text-4xl text-center mt-10 font-semibold">
+    <h1 class="text-4xl text-center mt-5 font-semibold">
         Currency Converter
     </h1>
     <p class="text-center mt-3">
@@ -19,38 +19,35 @@
 
 
 
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-5">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-3">
 
             {{-- Navigation --}}
-            <div class="flex justify-evenly border mt-5 rounded-3xl">
-                <x-currency-components.currency-nav link="{{ route('home') }}" :isActive='true'
-                    iconName='currency_exchange' name='Convert'></x-currency-components.currency-nav>
-                <x-currency-components.currency-nav link="{{ route('chart') }}" :isActive='false' iconName='analytics'
-                    name='Chart'></x-currency-components.currency-nav>
-            </div>
-
+            <x-currency-components.pages-navigation></x-currency-components.pages-navigation>
             {{-- convert area --}}
             <form action="" method="GET" class="w-full">
                 <div class="w-full sm:flex sm:justify-around my-3 sm:space-x-1 items-center">
+                    @error('amount')
+                        {{$message}}
+                    @enderror
                     <div
                         class="mt-1 sm:mt-0 border rounded-lg  p-3 w-full sm:w-1/3 focus-within:ring-1 focus-within:ring-sky-500 group hover:bg-slate-100">
                         <label for="amount" class="block text-gray-500">Amount</label>
                         <div class="flex ">
                             <span class="my-auto">$</span>
-                            <input value="{{ isset($amount) ? $amount : '' }}" name="amount" min='0' max="1000000"
-                                inputmode="numeric" type="number" id='amount'
+                            <input value="{{ isset($amount) ? $amount : '' }}" name="amount" min='0.00'
+                                max="1000000" inputmode="numeric" type="number" step="any" id='amount'
                                 class=" m-0 p-0 border-0 w-full  focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none group-hover:bg-slate-100">
                         </div>
                     </div>
                     <x-currency-components.currency-dropbox :countries="$countries" destination='baseCurrency'
-                        labelName='From' oldSelected={{$baseCurrency}}></x-currency-components.currency-dropbox>
+                        labelName='From' :oldSelected="$baseCurrency"></x-currency-components.currency-dropbox>
                     <div class="w-auto flex justify-center">
                         <x-currency-components.swap-button from='baseCurrency'
                             to='targetedCurrency'></x-currency-components.swap-button>
                     </div>
                     <x-currency-components.currency-dropbox :countries="$countries" destination='targetedCurrency'
-                        labelName='To' oldSelected={{$targetedCurrency}}></x-currency-components.currency-dropbox>
+                        labelName='To' :oldSelected="$targetedCurrency"></x-currency-components.currency-dropbox>
                 </div>
 
 
@@ -81,7 +78,7 @@
                                         Bookmark!
                                     </p>
                                 </button>
-                            </div >
+                            </div>
                         @endauth
                     </div>
 
@@ -100,20 +97,20 @@
 
         {{-- Table --}}
         <div class="sm:flex sm:justify-between sm:space-x-10">
-            <x-currency-components.country-to-country-table from={{$countries[$baseCurrency]}}
-                fromSymbol={{$baseCurrency}} to={{$countries[$targetedCurrency]}}
-                toSymbol={{$targetedCurrency}}
-                toValue={{$exchangeRate}}></x-currency-components.country-to-country-table>
-            <x-currency-components.country-to-country-table from={{$countries[$targetedCurrency]}}
-                fromSymbol={{$targetedCurrency}} to={{$countries[$baseCurrency]}} toSymbol={{$baseCurrency}}
-                toValue={{$reverseExchangeRate}}></x-currency-components.country-to-country-table>
+            <x-currency-components.country-to-country-table :from="$countries[$baseCurrency]"
+                :fromSymbol="$baseCurrency" :to="$countries[$targetedCurrency]"
+                :toSymbol="$targetedCurrency"
+                :toValue="$exchangeRate"></x-currency-components.country-to-country-table>
+            <x-currency-components.country-to-country-table :from="$countries[$targetedCurrency]"
+                :fromSymbol="$targetedCurrency" :to="$countries[$baseCurrency]" :toSymbol="$baseCurrency"
+                :toValue="$reverseExchangeRate"></x-currency-components.country-to-country-table>
         </div>
     </div>
 
     <script>
         let record = {}
 
-        function interactiveChanges(){
+        function interactiveChanges() {
             const exchangeRate = @json($exchangeRate);
             const countries = @json($countries);
             const baseCurrency = @json($baseCurrency);
@@ -129,43 +126,52 @@
 
             amount.addEventListener('keyup', () => {
                 const convertedResult = document.getElementById('converted-result');
-                record.amount = amount.value;
-                convertedResult.textContent = amount.value + ' ' + countries[baseCurrency] + ' = ' + exchangeRate * amount.value +
+                let value = parseFloat(amount.value)
+                if (!isNaN(value)) {
+                    value = value.toFixed(2);
+                    record.amount = value;
+                } else{
+                    value = 0;
+                }
+                convertedResult.textContent = value + ' ' + countries[baseCurrency] + ' = ' + exchangeRate *
+                    value +
                     ' ' + countries[targetedCurrency];
             });
         }
 
 
-        async function bookmark(event){
+        async function bookmark(event) {
 
             event.stopPropagation();
             // console.log('this is working');
 
             const url = @json(route('bookmark.store'));
-            const response = await fetch(url,{
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': @json(csrf_token()),
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': @json(csrf_token()),
                 },
-                body: JSON.stringify(record),
+                body: JSON.stringify({
+                    amount: record.amount,
+                    base_currency: record.baseCurrency,
+                    targeted_currency: record.targetedCurrency,
+                    exchange_rate: record.exchangeRate,
+                    reverse_exchange_rate: record.reverseExchangRate,
+                }),
             })
 
             if (!response.ok) {
-               console.log(response.status);
-            } else{
+                console.log(response.status);
+            } else {
                 const data = await response.json();
                 console.log('API Response:', data);
 
                 // Access the `id` field from the response
                 console.log('ID:', data.id);
-
             }
         }
 
         interactiveChanges();
-
-
-
     </script>
 </x-app-layout>

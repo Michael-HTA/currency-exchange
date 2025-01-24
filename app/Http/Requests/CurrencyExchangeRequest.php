@@ -25,7 +25,7 @@ class CurrencyExchangeRequest extends FormRequest
         return [
             'baseCurrency' => 'nullable|string',
             'targetedCurrency' => 'nullable|string',
-            'amount' => 'nullable',
+            'amount' => 'nullable|numeric',
         ];
     }
 }

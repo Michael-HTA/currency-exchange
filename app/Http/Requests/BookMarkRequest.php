@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookMarkRequest extends FormRequest
+class BookmarkRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class BookMarkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'amount' => 'required|numeric',
+            'base_currency' => 'required|string',
+            'targeted_currency' => 'required|string',
+            'exchange_rate' => 'required|numeric',
+            'reverse_exchange_rate' => 'required|numeric',
         ];
     }
 }
