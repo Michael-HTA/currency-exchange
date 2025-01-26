@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookmarkRequest;
+use App\Http\Requests\BookmarkStoreRequest;
 use App\Http\Resources\BookmarkCollection;
 use App\Http\Resources\BookmarkResource;
 use App\Models\Bookmark;
@@ -14,18 +15,38 @@ use Illuminate\Support\Facades\Log;
 
 class BookmarkController extends Controller
 {
-    public function index()
+    public function index(BookmarkRequest $request)
     {
         $userId = Auth::id();
+        $currencies = Currency::all();
+        $validated = $request->validated();
 
-        $userBookmark = Bookmark::with(['baseCurrency', 'targetedCurrency'])->where('user_id', $userId)->paginate(9);
+        if (isset($validated['baseCurrency']) && isset($validated['targetedCurrency'])) {
 
-        return view('bookmark', [
-            'userBookmarks' => $userBookmark,
-        ]);
+            $baseCurrency = Currency::where('code', $validated['baseCurrency'])->first();
+            $targetedCurrency = Currency::where('code', $validated['targetedCurrency'])->first();
+            $userBookmarks = Bookmark::where('base_id', $baseCurrency->id)->where('targeted_id', $targetedCurrency->id)->paginate(9);
+
+            return view('bookmark', [
+                'currencies' => $currencies,
+                'userBookmarks' => $userBookmarks,
+                'baseCurrency' => $validated['baseCurrency'],
+                'targetedCurrency' => $validated['targetedCurrency'],
+            ]);
+
+        } else {
+            $userBookmarks = Bookmark::with(['baseCurrency', 'targetedCurrency'])->where('user_id', $userId)->paginate(9);
+
+            return view('bookmark', [
+                'currencies' => $currencies,
+                'userBookmarks' => $userBookmarks,
+                'baseCurrency' => $validated['baseCurrency'] ?? 'USD',
+                'targetedCurrency' => $validated['targetedCurrency'] ?? 'THB',
+            ]);
+        }
     }
 
-    public function store(BookmarkRequest $request)
+    public function store(BookmarkStoreRequest $request)
     {
         try {
             $bookmark = new Bookmark();
@@ -51,7 +72,7 @@ class BookmarkController extends Controller
 
             return response()->json([
                 'error' => 'Something wrong'
-            ],500);
+            ], 500);
         }
     }
 

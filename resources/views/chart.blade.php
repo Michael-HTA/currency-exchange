@@ -22,13 +22,13 @@
             <x-currency-components.pages-navigation></x-currency-components.pages-navigation>
 
             <div class="w-full sm:flex sm:justify-around my-3 sm:space-x-1 items-center">
-                <x-currency-components.currency-dropbox :countries="$countries" destination='baseCurrency'
+                <x-currency-components.currency-dropbox :currencies="$currencies" destination='baseCurrency'
                         labelName='From' oldSelected={{ $baseCurrency }}></x-currency-components.currency-dropbox>
                 <div class="w-auto flex justify-center">
                     <x-currency-components.swap-button from='baseCurrency'
                             to='targetedCurrency'></x-currency-components.swap-button>
                 </div>
-                <x-currency-components.currency-dropbox :countries="$countries" destination='targetedCurrency'
+                <x-currency-components.currency-dropbox :currencies="$currencies" destination='targetedCurrency'
                         labelName='To' oldSelected={{ $targetedCurrency }}></x-currency-components.currency-dropbox>
             </div>
             <div class="flex justify-center h-72 w-full">

@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Currency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class ChartController extends Controller
 {
     public function index(){
-        return view('chart');
+        $currencies = Currency::all();
+
+        return view('chart',[
+            'currencies' => $currencies,
+        ]);
     }
 
     public function get(){

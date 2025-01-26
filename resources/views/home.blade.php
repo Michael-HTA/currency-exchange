@@ -1,10 +1,12 @@
 @php
+    $baseCurrencySymbol = '';
     $baseCurrencyName = '';
     $targetedCurrencyName = '';
 
     foreach ($currencies as $currency) {
         if ($currency->code === $baseCurrency) {
             $baseCurrencyName = $currency->name;
+            $baseCurrencySymbol = $currency->symbol;
             break;
         }
     }
@@ -27,7 +29,7 @@
     </p>
 
     <div class="flex justify-center mt-2 h-4">
-        <p class=" text-green-500 flex items-center border-b-2 border-b-green-500 invisible opacity-0 h-0 overflow-hidden transition-all duration-500 ease-in-out"
+        <p class=" text-green-400 flex items-center border-b-2 border-b-green-400 invisible h-0 opacity-0 overflow-hidden transition-all duration-700 ease-linear"
             id="bookmark-message">Bookmark has been added!<button type="button" class="material-icons" id="bookmark-close">
                 close
             </button></p>
@@ -47,10 +49,10 @@
                         class="mt-1 sm:mt-0 border rounded-lg  p-3 w-full sm:w-1/3 focus-within:ring-1 focus-within:ring-sky-500 group hover:bg-slate-100">
                         <label for="amount" class="block text-gray-500">Amount</label>
                         <div class="flex ">
-                            <span class="my-auto">$</span>
+                            <span class="my-auto">{{$baseCurrencySymbol}}</span>
                             <input value="{{ isset($amount) ? $amount : '' }}" name="amount" min='0.00'
                                 max="1000000" inputmode="numeric" type="number" step="any" id='amount'
-                                class=" m-0 p-0 border-0 w-full  focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none group-hover:bg-slate-100">
+                                class=" m-0 p-0 ml-1 border-0 w-auto  focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none group-hover:bg-slate-100">
                         </div>
                     </div>
                     <x-currency-components.currency-dropbox :currencies="$currencies" destination='baseCurrency'
@@ -169,14 +171,14 @@
                 },
                 body: JSON.stringify({
                     amount: record.amount,
-                    base_currency: record.baseCurrency,
-                    targeted_currency: record.targetedCurrency,
-                    exchange_rate: record.exchangeRate,
+                    baseCurrency: record.baseCurrency,
+                    targetedCurrency: record.targetedCurrency,
+                    exchangeRate: record.exchangeRate,
                     reverse_exchange_rate: record.reverseExchangRate,
                 }),
             })
 
-            if (!response.ok) {
+            if (response.status >= 400) {
                 console.log(response.status);
             } else {
                 // const data = await response.json();

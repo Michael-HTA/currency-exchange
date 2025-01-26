@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BookmarkRequest extends FormRequest
+class BookmarkStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,11 @@ class BookmarkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'baseCurrency' => 'nullable|string|exists:currencies,code',
-            'targetedCurrency' => 'nullable|string|exists:currencies,code',
+            'amount' => 'required|numeric',
+            'baseCurrency' => 'required|string',
+            'targetedCurrency' => 'required|string',
+            'exchangeRate' => 'required|numeric',
+            'reverseExchangeRate' => 'required|numeric',
         ];
     }
 }
