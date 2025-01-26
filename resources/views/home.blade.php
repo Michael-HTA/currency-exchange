@@ -1,12 +1,28 @@
 @php
-    $countries = [
-        'USD' => 'US Dollar',
-        'THB' => 'Thai Baht',
-        'PHP' => 'Philippine Peso',
-        'SGD' => 'Singapore Dollar',
-        'MYR' => 'Malaysian Ringgit',
-    ];
+    $baseCurrencyName = '';
+    $targetedCurrencyName = '';
+
+    foreach ($currencies as $currency) {
+        if ($currency->code === $baseCurrency) {
+            $baseCurrencyName = $currency->name;
+            break;
+        }
+    }
+
+    foreach ($currencies as $currency) {
+        if ($currency->code === $targetedCurrency) {
+            $targetedCurrencyName = $currency->name;
+            break;
+        }
+    }
 @endphp
+
+<p id="converted-result">
+    {{ $amount . ' ' . $baseCurrencyName }} =
+    {{ $amount * $exchangeRate . ' ' . $targetedCurrencyName }}
+</p>
+
+
 <x-app-layout>
 
     {{-- Header --}}
@@ -44,13 +60,13 @@
                                 class=" m-0 p-0 border-0 w-full  focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none group-hover:bg-slate-100">
                         </div>
                     </div>
-                    <x-currency-components.currency-dropbox :countries="$countries" destination='baseCurrency'
+                    <x-currency-components.currency-dropbox :currencies="$currencies" destination='baseCurrency'
                         labelName='From' :oldSelected="$baseCurrency"></x-currency-components.currency-dropbox>
                     <div class="w-auto flex justify-center">
                         <x-currency-components.swap-button from='baseCurrency'
                             to='targetedCurrency'></x-currency-components.swap-button>
                     </div>
-                    <x-currency-components.currency-dropbox :countries="$countries" destination='targetedCurrency'
+                    <x-currency-components.currency-dropbox :currencies="$currencies" destination='targetedCurrency'
                         labelName='To' :oldSelected="$targetedCurrency"></x-currency-components.currency-dropbox>
                 </div>
 
@@ -60,8 +76,8 @@
                     <div class="flex rounded-xl p-3">
                         <div>
                             <p id='converted-result'>
-                                {{ $amount . ' ' . $countries[$baseCurrency] }} =
-                                {{ $amount * $exchangeRate . ' ' . $countries[$targetedCurrency] }}
+                                {{ $amount . ' ' . $baseCurrencyName }} =
+                                {{ $amount * $exchangeRate . ' ' . $targetedCurrencyName }}
                             </p>
                             <p>
                                 1 {{ $baseCurrency }} = {{ $exchangeRate . ' ' . $targetedCurrency }}
@@ -101,9 +117,9 @@
 
         {{-- Table --}}
         <div class="sm:flex sm:justify-between sm:space-x-10">
-            <x-currency-components.country-to-country-table :from="$countries[$baseCurrency]" :fromSymbol="$baseCurrency" :to="$countries[$targetedCurrency]"
+            <x-currency-components.country-to-country-table :from="$baseCurrencyName" :fromSymbol="$baseCurrency" :to="$targetedCurrencyName"
                 :toSymbol="$targetedCurrency" :toValue="$exchangeRate"></x-currency-components.country-to-country-table>
-            <x-currency-components.country-to-country-table :from="$countries[$targetedCurrency]" :fromSymbol="$targetedCurrency" :to="$countries[$baseCurrency]"
+            <x-currency-components.country-to-country-table :from="$targetedCurrencyName" :fromSymbol="$targetedCurrency" :to="$baseCurrencyName"
                 :toSymbol="$baseCurrency" :toValue="$reverseExchangeRate"></x-currency-components.country-to-country-table>
         </div>
     </div>
@@ -113,7 +129,8 @@
 
         function interactiveChanges() {
             const exchangeRate = @json($exchangeRate);
-            const countries = @json($countries);
+            const baseCurrencyName = 'something';  //@json($baseCurrencyName)
+            const targetedCurrencyName = 'nothing'; //@json($targetedCurrencyName);
             const baseCurrency = @json($baseCurrency);
             const targetedCurrency = @json($targetedCurrency);
             const amount = document.getElementById('amount');
@@ -134,11 +151,13 @@
                 } else {
                     value = 0;
                 }
-
-                convertedResult.textContent = value + ' ' + countries[baseCurrency] + ' = ' + (Math.round(
+                convertedResult.textContent = value + ' ' + baseCurrencyName + ' = ' + (Math.round(
                         exchangeRate *
                         value * 100) / 100) +
-                    ' ' + countries[targetedCurrency];
+                    ' ' + targetedCurrencyName;
+
+                console.log(convertedResult.textContent);
+
             });
         }
 
@@ -179,10 +198,12 @@
             }
         }
 
-        interactiveChanges();
+        document.addEventListener('DOMContentLoaded', function() {
+            interactiveChanges();
+        });
 
 
-        function closeMessage(){
+        function closeMessage() {
             const bookmarkClose = document.getElementById('bookmark-close');
             bookmarkClose.addEventListener('click', () => {
                 const bookmarkMessage = document.getElementById('bookmark-message');

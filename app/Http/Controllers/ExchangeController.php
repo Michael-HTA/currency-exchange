@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CurrencyExchangeRequest;
+use App\Models\Currency;
 use Illuminate\Support\Facades\Http;
 
 class ExchangeController extends Controller
@@ -13,9 +14,12 @@ class ExchangeController extends Controller
         $exchangeRate = 2;
         $reverseExchangeRate = 1;
         $validated = $request->validated();
+        $currencies = Currency::all();
+
 
         // dd($validated);
         return view('home',[
+            'currencies' => $currencies,
             'amount' => round($validated['amount'] ?? 0,2),
             'baseCurrency' => $validated['baseCurrency'] ?? 'USD',
             'targetedCurrency' => $validated['targetedCurrency'] ?? 'THB',
@@ -31,6 +35,7 @@ class ExchangeController extends Controller
         $apiKey = config('services.api_service.key');
 
         $validated = $request->validated();
+        $currencies = Currency::all();
 
         if(isset($validated['targetedCurrency'])){
 
@@ -43,6 +48,7 @@ class ExchangeController extends Controller
             $reverseExchangeRate = round(1/$data['data'][$validated['targetedCurrency']],2);
 
             return view('home',[
+                'currencies' => $currencies,
                 'amount' => round($validated['amount'],2),
                 'baseCurrency' => $validated['baseCurrency'],
                 'targetedCurrency' => $validated['targetedCurrency'],
@@ -60,6 +66,7 @@ class ExchangeController extends Controller
             $reverseExchangeRate = round(1/$data['data']['THB'],2);
 
             return view('home',[
+                'currencies' => $currencies,
                 'amount' => 10,
                 'baseCurrency' => 'USD',
                 'targetedCurrency' => 'THB',

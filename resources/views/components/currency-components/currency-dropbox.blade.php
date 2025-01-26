@@ -3,9 +3,9 @@
     <label class="text-gray-500 block" for="{{ $destination }}">{{ $labelName }}</label>
     <select name="{{ $destination }}" id="{{ $destination }}"
         class="w-full border-0 focus:ring-0 m-0 p-0 group-hover:bg-slate-100">
-        @foreach ($countries as $key => $value)
-        <option value="{{ $key }}" {{ $oldSelected == $key ? 'selected' : '' }}>
-            {{ $key }} - {{ $value }}
+        @foreach ($currencies as $currency)
+        <option value="{{ $currency->code }}" {{ $oldSelected == $currency->code ? 'selected' : '' }}>
+            {{ $currency->code }} - {{ $currency->name }}
         </option>
     @endforeach
     </select>

@@ -6,6 +6,7 @@ use App\Http\Requests\BookmarkRequest;
 use App\Http\Resources\BookmarkCollection;
 use App\Http\Resources\BookmarkResource;
 use App\Models\Bookmark;
+use App\Models\Currency;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,22 +14,13 @@ use Illuminate\Support\Facades\Log;
 
 class BookmarkController extends Controller
 {
-
-    private $currencies = [
-        'USD' => 1,
-        'THB' => 6,
-        'PHP' => 7,
-        'SGD' => 8,
-        'MYR' => 9,
-    ];
-
-    public function index() {
-
+    public function index()
+    {
         $userId = Auth::id();
 
-        $userBookmark = Bookmark::with(['baseCurrency','targetedCurrency'])->where('user_id',$userId)->paginate(9);
+        $userBookmark = Bookmark::with(['baseCurrency', 'targetedCurrency'])->where('user_id', $userId)->paginate(9);
 
-        return view('bookmark',[
+        return view('bookmark', [
             'userBookmarks' => $userBookmark,
         ]);
     }
@@ -38,11 +30,13 @@ class BookmarkController extends Controller
         try {
             $bookmark = new Bookmark();
             $validated = $request->validated();
+            $baseCurrency = Currency::where('code', $validated['base_currency'])->first();
+            $targetedCurrency = Currency::where('code', $validated['targeted_currency'])->first();
 
             $bookmark->user_id = Auth::id();
             $bookmark->amount = $validated['amount'];
-            $bookmark->base_id = $this->currencies[$validated['base_currency']];
-            $bookmark->targeted_id = $this->currencies[$validated['targeted_currency']];
+            $bookmark->base_id = $baseCurrency->id;
+            $bookmark->targeted_id = $targetedCurrency->id;
             $bookmark->exchange_rate = $validated['exchange_rate'];
             $bookmark->reverse_exchange_rate = $validated['reverse_exchange_rate'];
 
@@ -57,13 +51,14 @@ class BookmarkController extends Controller
 
             return response()->json([
                 'error' => 'Something wrong'
-            ]);
+            ],500);
         }
     }
 
-    public function destroy(Request $request){
+    public function destroy(Request $request)
+    {
 
-        try{
+        try {
             $validated = $request->validate([
                 'id' => 'required|integer',
             ]);
@@ -73,11 +68,9 @@ class BookmarkController extends Controller
             $bookmark->delete();
 
             return response()->json('success');
-
-        } catch(Exception $e){
+        } catch (Exception $e) {
 
             return $e->getMessage();
         }
-
     }
 }
