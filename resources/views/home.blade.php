@@ -16,13 +16,6 @@
         }
     }
 @endphp
-
-<p id="converted-result">
-    {{ $amount . ' ' . $baseCurrencyName }} =
-    {{ $amount * $exchangeRate . ' ' . $targetedCurrencyName }}
-</p>
-
-
 <x-app-layout>
 
     {{-- Header --}}
@@ -129,8 +122,8 @@
 
         function interactiveChanges() {
             const exchangeRate = @json($exchangeRate);
-            const baseCurrencyName = 'something';  //@json($baseCurrencyName)
-            const targetedCurrencyName = 'nothing'; //@json($targetedCurrencyName);
+            const baseCurrencyName = @json($baseCurrencyName);
+            const targetedCurrencyName = @json($targetedCurrencyName); 
             const baseCurrency = @json($baseCurrency);
             const targetedCurrency = @json($targetedCurrency);
             const amount = document.getElementById('amount');
@@ -156,7 +149,7 @@
                         value * 100) / 100) +
                     ' ' + targetedCurrencyName;
 
-                console.log(convertedResult.textContent);
+                // console.log(convertedResult.textContent);
 
             });
         }
