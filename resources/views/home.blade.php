@@ -125,7 +125,7 @@
         function interactiveChanges() {
             const exchangeRate = @json($exchangeRate);
             const baseCurrencyName = @json($baseCurrencyName);
-            const targetedCurrencyName = @json($targetedCurrencyName); 
+            const targetedCurrencyName = @json($targetedCurrencyName);
             const baseCurrency = @json($baseCurrency);
             const targetedCurrency = @json($targetedCurrency);
             const amount = document.getElementById('amount');
@@ -135,7 +135,7 @@
             record.targetedCurrency = targetedCurrency;
             record.exchangeRate = exchangeRate;
             record.amount = amount.value;
-            record.reverseExchangRate = @json($reverseExchangeRate);
+            record.reverseExchangeRate = @json($reverseExchangeRate);
 
             amount.addEventListener('keyup', () => {
                 const convertedResult = document.getElementById('converted-result');
@@ -168,25 +168,28 @@
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': @json(csrf_token()),
+                    'Accept': 'application/json',
                 },
                 body: JSON.stringify({
                     amount: record.amount,
                     baseCurrency: record.baseCurrency,
                     targetedCurrency: record.targetedCurrency,
                     exchangeRate: record.exchangeRate,
-                    reverse_exchange_rate: record.reverseExchangRate,
+                    reverseExchangeRate: record.reverseExchangeRate,
                 }),
             })
 
-            if (response.status >= 400) {
+            if (!response.ok) {
+                const data = await response.json();
+                console.log('API Response:', data);
                 console.log(response.status);
             } else {
-                // const data = await response.json();
-                // console.log('API Response:', data);
+                const data = await response.json();
+                console.log('API Response:', data);
 
                 // Access the `id` field from the response
                 // console.log('ID:', data.id);
-
+                console.log(response.status);
                 const bookmarkMessage = document.getElementById('bookmark-message');
                 bookmarkMessage.classList.remove('invisible', 'opacity-0', 'h-0');
                 bookmarkMessage.classList.add('opacity-100', 'h-auto');

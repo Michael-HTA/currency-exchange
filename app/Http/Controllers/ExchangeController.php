@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Http;
 
 class ExchangeController extends Controller
 {
-
     public function getData(CurrencyExchangeRequest $request){
 
         $exchangeRate = 2;
@@ -39,7 +38,7 @@ class ExchangeController extends Controller
 
         if(isset($validated['targetedCurrency'])){
 
-            $data = Http::get($baseUrl,[
+            $data = Http::get($baseUrl . 'latest',[
                 'apikey' => $apiKey,
                 'currencies' => $validated['targetedCurrency'],
             ]);

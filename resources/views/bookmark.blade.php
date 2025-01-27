@@ -19,7 +19,10 @@
             {{-- pages navigation --}}
             <x-currency-components.pages-navigation mb='mb-5'></x-currency-components.pages-navigation>
             <div class="sm:flex sm:justify-between sm:items-center">
-                <form action="" method="GET" class="w-full sm:w-auto sm:flex sm:justify-between items-center">
+                {{-- <div class="flex justify-center sm:w-1/2 ">
+                    <a href="{{ route('bookmark.show') }}" class="p-2 bg-sky-900 text-white hover:bg-slate-300 hover:text-black border rounded-3xl">Show All</a>
+                </div> --}}
+                <form action="" method="GET" class="w-full sm:flex sm:justify-between items-center">
                     <x-currency-components.currency-dropbox :currencies="$currencies" destination='baseCurrency' labelName='From'
                         :oldSelected="$baseCurrency"></x-currency-components.currency-dropbox>
                     <div class="w-auto flex justify-center">
@@ -33,16 +36,13 @@
                             class="w-36 bg-blue-600 text-center p-3 my-1 font-semibold text-white rounded-3xl hover:bg-blue-500 transition ease-in-out duration-300">Search</button>
                     </div>
                 </form>
-                <div class="flex justify-center">
-                    <a href="{{ route('bookmark.show') }}">Show All</a>
-                </div>
             </div>
         </div>
     </div>
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-2 flex">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-2 flex flex-wrap justify-start gap-x-5">
         @foreach ($userBookmarks as $bookmark)
-            <div class="w-full mt-2 rounded-lg bg-white p-3 border h-36 flex flex-col justify-between transition ease-in-out hover:-translate-y-0.5 hover:scale-105 duration-300 sm:w-72 "
-                id="{{ $bookmark->id }}">
+            <div class="w-full mt-2 rounded-lg bg-white p-3 border h-36 flex-none flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:scale-105 duration-300 sm:w-72" id="{{ $bookmark->id }}">
+
 
                 {{-- Header --}}
                 <p class="text-gray-400">{{ $bookmark->created_at->format('M d Y') }}</p>
@@ -91,6 +91,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': @json(csrf_token()),
+                    'Accept': 'application/json',
                 },
                 body: JSON.stringify({
                     id: id,
@@ -100,8 +101,8 @@
             if (!response.ok) {
                 console.log(response.status);
             } else {
-                // const data = await response.json();
-                // console.log('API Response:', data);
+                const data = await response.json();
+                console.log('API Response:', data);
 
                 // Access the `id` field from the response
                 // console.log('ID:', data);

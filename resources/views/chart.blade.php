@@ -1,13 +1,3 @@
-@php
-    $countries = [
-        'USD' => 'US Dollar',
-        'THB' => 'Thai Baht',
-        'PHP' => 'Philippine Peso',
-        'SGD' => 'Singapore Dollar',
-        'MYR' => 'Malaysian Ringgit',
-    ];
-@endphp
-
 <x-app-layout>
     <h1 class="text-4xl text-center mt-5 font-semibold">
         Chart
@@ -22,14 +12,14 @@
             <x-currency-components.pages-navigation></x-currency-components.pages-navigation>
 
             <div class="w-full sm:flex sm:justify-around my-3 sm:space-x-1 items-center">
-                <x-currency-components.currency-dropbox :currencies="$currencies" destination='baseCurrency'
-                        labelName='From' oldSelected={{ $baseCurrency }}></x-currency-components.currency-dropbox>
+                <x-currency-components.currency-dropbox :currencies="$currencies" destination='baseCurrency' labelName='From'
+                    :oldSelected="$baseCurrency"></x-currency-components.currency-dropbox>
                 <div class="w-auto flex justify-center">
                     <x-currency-components.swap-button from='baseCurrency'
-                            to='targetedCurrency'></x-currency-components.swap-button>
+                        to='targetedCurrency'></x-currency-components.swap-button>
                 </div>
-                <x-currency-components.currency-dropbox :currencies="$currencies" destination='targetedCurrency'
-                        labelName='To' oldSelected={{ $targetedCurrency }}></x-currency-components.currency-dropbox>
+                <x-currency-components.currency-dropbox :currencies="$currencies" destination='targetedCurrency' labelName='To'
+                    :oldSelected="$targetedCurrency"></x-currency-components.currency-dropbox>
             </div>
             <div class="flex justify-center h-72 w-full">
                 <canvas id="myChart"></canvas>
@@ -40,21 +30,27 @@
     <script>
         const ctx = document.getElementById('myChart');
         // console.log(Chart);
+        const lastSevenDays = @json($lastSevenDays);
         document.addEventListener('DOMContentLoaded', function() {
             let myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange','Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'Red'],
                     datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3,12, 19, 3, 5, 2, 3],
+                        label: 'Rate of exchange',
+                        data: lastSevenDays.map(day => day.rate),
                         borderWidth: 1
                     }]
                 },
                 options: {
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: false,
+                            min: 0, // Set the minimum value for the y-axis
+                            max: 60, // Set the maximum value for the y-axis
+                            ticks: {
+                                stepSize: 1 // Set the step size between ticks on the y-axis
+                            }
                         }
                     },
                     //responsive: true, // Ensures the chart resizes with its container

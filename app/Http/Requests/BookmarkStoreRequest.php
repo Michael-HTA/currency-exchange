@@ -23,8 +23,8 @@ class BookmarkStoreRequest extends FormRequest
     {
         return [
             'amount' => 'required|numeric',
-            'baseCurrency' => 'required|string',
-            'targetedCurrency' => 'required|string',
+            'baseCurrency' => 'required|string|exists:currencies,code',
+            'targetedCurrency' => 'required|string|exists:currencies,code',
             'exchangeRate' => 'required|numeric',
             'reverseExchangeRate' => 'required|numeric',
         ];

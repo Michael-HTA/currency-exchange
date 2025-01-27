@@ -25,7 +25,7 @@ class BookmarkController extends Controller
 
             $baseCurrency = Currency::where('code', $validated['baseCurrency'])->first();
             $targetedCurrency = Currency::where('code', $validated['targetedCurrency'])->first();
-            $userBookmarks = Bookmark::where('base_id', $baseCurrency->id)->where('targeted_id', $targetedCurrency->id)->paginate(9);
+            $userBookmarks = Bookmark::where('base_id', $baseCurrency->id)->where('targeted_id', $targetedCurrency->id)->paginate(8);
 
             return view('bookmark', [
                 'currencies' => $currencies,
@@ -35,7 +35,7 @@ class BookmarkController extends Controller
             ]);
 
         } else {
-            $userBookmarks = Bookmark::with(['baseCurrency', 'targetedCurrency'])->where('user_id', $userId)->paginate(9);
+            $userBookmarks = Bookmark::with(['baseCurrency', 'targetedCurrency'])->where('user_id', $userId)->paginate(8);
 
             return view('bookmark', [
                 'currencies' => $currencies,
@@ -51,15 +51,15 @@ class BookmarkController extends Controller
         try {
             $bookmark = new Bookmark();
             $validated = $request->validated();
-            $baseCurrency = Currency::where('code', $validated['base_currency'])->first();
-            $targetedCurrency = Currency::where('code', $validated['targeted_currency'])->first();
+            $baseCurrency = Currency::where('code', $validated['baseCurrency'])->first();
+            $targetedCurrency = Currency::where('code', $validated['targetedCurrency'])->first();
 
             $bookmark->user_id = Auth::id();
             $bookmark->amount = $validated['amount'];
             $bookmark->base_id = $baseCurrency->id;
             $bookmark->targeted_id = $targetedCurrency->id;
-            $bookmark->exchange_rate = $validated['exchange_rate'];
-            $bookmark->reverse_exchange_rate = $validated['reverse_exchange_rate'];
+            $bookmark->exchange_rate = $validated['exchangeRate'];
+            $bookmark->reverse_exchange_rate = $validated['reverseExchangeRate'];
 
             $bookmark->save();
 
@@ -88,10 +88,17 @@ class BookmarkController extends Controller
 
             $bookmark->delete();
 
-            return response()->json('success');
+            return response()->json([
+                'statusCode' => 200,
+                'message' => 'success',
+            ]);
         } catch (Exception $e) {
 
-            return $e->getMessage();
+            Log::error($e->getMessage());
+
+            return response()->json([
+                'error' => 'Something wrong'
+            ], 500);
         }
     }
 }
