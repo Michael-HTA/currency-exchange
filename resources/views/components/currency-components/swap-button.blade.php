@@ -1,4 +1,4 @@
-<button type="button"  onclick="swiftSelectedOptions(event,'{{ $from }}','{{ $to }}')" class=" my-1 sm:my-0 material-icons border rounded-full h-10 w-10 hover:bg-slate-100 text-blue-600">
+<button type="button"  onclick="swiftSelectedOptions(event,'{{ $from }}','{{ $to }}')" class=" my-1 sm:my-0 material-icons border rounded-full h-10 w-10 hover:bg-slate-100 text-blue-600 rotate-90 sm:rotate-0">
     swap_horiz
 </button>
 

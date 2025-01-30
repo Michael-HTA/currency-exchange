@@ -39,9 +39,9 @@
             </div>
         </div>
     </div>
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-2 flex flex-wrap justify-start gap-x-5">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4">
         @foreach ($userBookmarks as $bookmark)
-            <div class="w-full mt-2 rounded-lg bg-white p-3 border h-36 flex-none flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:scale-105 duration-300 sm:w-72" id="{{ $bookmark->id }}">
+            <div class="mt-2 rounded-lg bg-white p-3 border h-36 flex-none flex flex-col justify-between transition-all hover:-translate-y-0.5 hover:scale-105 duration-300" id="{{ $bookmark->id }}">
 
 
                 {{-- Header --}}

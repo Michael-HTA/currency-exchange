@@ -49,7 +49,7 @@
                         class="mt-1 sm:mt-0 border rounded-lg  p-3 w-full sm:w-1/3 focus-within:ring-1 focus-within:ring-sky-500 group hover:bg-slate-100">
                         <label for="amount" class="block text-gray-500">Amount</label>
                         <div class="flex ">
-                            <span class="my-auto">{{$baseCurrencySymbol}}</span>
+                            <span class="my-auto">{{ $baseCurrencySymbol }}</span>
                             <input value="{{ isset($amount) ? $amount : '' }}" name="amount" min='0.00'
                                 max="1000000" inputmode="numeric" type="number" step="any" id='amount'
                                 class=" m-0 p-0 ml-1 border-0 w-auto  focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none group-hover:bg-slate-100">
@@ -84,16 +84,7 @@
 
                         {{-- for authenticated user --}}
                         @auth
-                            <div class="flex items-center justify-center mt-2">
-                                <button type="button" class="hover:text-blue-500" onclick="bookmark(event)">
-                                    <span class="material-icons block">
-                                        star
-                                    </span>
-                                    <p>
-                                        Bookmark!
-                                    </p>
-                                </button>
-                            </div>
+                            <x-currency-components.bookmark-btn></x-currency-components.bookmark-btn>
                         @endauth
                     </div>
 
@@ -148,7 +139,7 @@
                 }
                 convertedResult.textContent = value + ' ' + baseCurrencyName + ' = ' + (Math.round(
                         exchangeRate *
-                        value * 100) / 100) +
+                        value * 100) / 100).toFixed(2) +
                     ' ' + targetedCurrencyName;
 
                 // console.log(convertedResult.textContent);
@@ -156,45 +147,6 @@
             });
         }
 
-
-        async function bookmark(event) {
-
-            event.stopPropagation();
-            // console.log('this is working');
-
-            const url = @json(route('bookmark.store'));
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': @json(csrf_token()),
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    amount: record.amount,
-                    baseCurrency: record.baseCurrency,
-                    targetedCurrency: record.targetedCurrency,
-                    exchangeRate: record.exchangeRate,
-                    reverseExchangeRate: record.reverseExchangeRate,
-                }),
-            })
-
-            if (!response.ok) {
-                const data = await response.json();
-                console.log('API Response:', data);
-                console.log(response.status);
-            } else {
-                const data = await response.json();
-                console.log('API Response:', data);
-
-                // Access the `id` field from the response
-                // console.log('ID:', data.id);
-                console.log(response.status);
-                const bookmarkMessage = document.getElementById('bookmark-message');
-                bookmarkMessage.classList.remove('invisible', 'opacity-0', 'h-0');
-                bookmarkMessage.classList.add('opacity-100', 'h-auto');
-            }
-        }
 
         document.addEventListener('DOMContentLoaded', function() {
             interactiveChanges();
