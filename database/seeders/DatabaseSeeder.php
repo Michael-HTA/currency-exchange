@@ -18,6 +18,12 @@ class DatabaseSeeder extends Seeder
     ];
 
     private $exchangeRates = [
+        "2025-01-29" => [
+            "MYR" => 4.3828504773,
+            "PHP" => 58.4102200429,
+            "SGD" => 1.3483901572,
+            "THB" => 33.7192641471
+        ],
         "2025-01-28" => [
             "MYR" => 4.390470774,
             "PHP" => 58.3452614733,

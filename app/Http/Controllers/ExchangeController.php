@@ -56,12 +56,14 @@ class ExchangeController extends Controller
             ]);
 
         } else{
-            $data = Http::get($baseUrl,[
+
+            $data = Http::get($baseUrl .'latest',[
                 'apikey' => $apiKey,
                 'currencies' => 'THB',
             ]);
 
             $data = $data->json();
+            // dd($data);
             $reverseExchangeRate = round(1/$data['data']['THB'],2);
 
             return view('home',[

@@ -27,7 +27,11 @@
     <p class="text-center mt-3">
         Check live foreign currency exchange rates
     </p>
-
+    <p class="text-center text-red-500 mt-1 h-2">
+        @error('amount')
+            {{ $message }}
+        @enderror
+    </p>
     <div class="flex justify-center mt-2 h-4">
         <p class=" text-green-400 flex items-center border-b-2 border-b-green-400 invisible h-0 opacity-0 overflow-hidden transition-all duration-700 ease-linear"
             id="bookmark-message">Bookmark has been added!<button type="button" class="material-icons" id="bookmark-close">
@@ -42,9 +46,6 @@
             {{-- convert area --}}
             <form action="" method="GET" class="w-full">
                 <div class="w-full sm:flex sm:justify-around my-3 sm:space-x-1 items-center">
-                    @error('amount')
-                        {{ $message }}
-                    @enderror
                     <div
                         class="mt-1 sm:mt-0 border rounded-lg  p-3 w-full sm:w-1/3 focus-within:ring-1 focus-within:ring-sky-500 group hover:bg-slate-100">
                         <label for="amount" class="block text-gray-500">Amount</label>

@@ -101,8 +101,8 @@
             if (!response.ok) {
                 console.log(response.status);
             } else {
-                const data = await response.json();
-                console.log('API Response:', data);
+                // const data = await response.json();
+                // console.log('API Response:', data);
 
                 // Access the `id` field from the response
                 // console.log('ID:', data);

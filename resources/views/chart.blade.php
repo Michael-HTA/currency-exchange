@@ -62,10 +62,12 @@
 
         const lastSevenDays = @json($lastSevenDays);
         document.addEventListener('DOMContentLoaded', function() {
+            let lastSevenDaysName = @json($lastSevenDaysName);
+            lastSevenDaysName.reverse()
             let myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: @json($lastSevenDaysName),
+                    labels: lastSevenDaysName,
                     datasets: [{
                         label: 'Rate of exchange',
                         data: lastSevenDays.map(rates => rates.rate),

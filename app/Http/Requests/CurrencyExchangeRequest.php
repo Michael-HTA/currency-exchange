@@ -25,7 +25,7 @@ class CurrencyExchangeRequest extends FormRequest
         return [
             'baseCurrency' => 'nullable|string|exists:currencies,code',
             'targetedCurrency' => 'nullable|string|exists:currencies,code',
-            'amount' => 'nullable|numeric',
+            'amount' => ['nullable', 'numeric', 'min:1', 'regex:/^\d+(\.\d{1,2})?$/'],
         ];
     }
 }

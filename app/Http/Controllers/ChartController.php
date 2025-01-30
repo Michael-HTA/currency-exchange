@@ -20,10 +20,11 @@ class ChartController extends Controller
         $lastSevenDays = $this->getLastSevenDaysData(2);
 
         $lastSevenDaysName = [];
-        for ($i = 0; $i < 7; $i++) {
+        for ($i = 1; $i < 7; $i++) {
             $date = Carbon::now()->subDays($i);
             $lastSevenDaysName[] = $date->format('l');
         }
+        // dd($lastSevenDaysName);
 
         return view('chart', [
             'currencies' => $currencies,
@@ -49,6 +50,6 @@ class ChartController extends Controller
     private function getLastSevenDaysData($targetId)
     {
 
-        return ExchangeRate::select('rate')->where('base_id', 1)->where('target_id', $targetId)->whereBetween('created_at', [now()->subDays(7), now()])->get();
+        return ExchangeRate::select('rate')->where('base_id', 1)->where('target_id', $targetId)->whereBetween('created_at', [now()->subDays(7), now()]) ->orderBy('created_at', 'asc')->get();
     }
 }

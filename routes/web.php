@@ -10,7 +10,7 @@ Route::get('/', function () {
     return redirect('/home');
 });
 
-Route::get('/home', [ExchangeController::class, 'getData'])->name('home');
+Route::get('/home', [ExchangeController::class, 'index'])->name('home');
 Route::get('/chart', [ChartController::class, 'index'])->name('chart');
 Route::post('/chart', [ChartController::class, 'getChartData'])->name('chart.data');
 
